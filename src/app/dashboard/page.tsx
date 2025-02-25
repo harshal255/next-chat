@@ -21,16 +21,6 @@ const page = () => {
         else if (status === "authenticated") {
             setIsLoading(false);
         }
-        else if (status === "unauthenticated") {
-            toast({
-                title: "You are not logged in",
-                description: "Please login to continue",
-                status: "warning",
-                duration: 1200,
-                isClosable: true,
-            });
-            router.push("/");
-        }
 
     }, [status, router]);
 

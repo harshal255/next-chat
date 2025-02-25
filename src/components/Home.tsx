@@ -14,24 +14,12 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import Auth from "../components/Authentication/Auth";
-import { useEffect } from "react";
 import Link from "next/link";
-import { useChat } from "@/contexts/ChatProvider";
 import { useRouter } from "next/navigation";
 
 const Home = () => {
-
-    const { isAuthenticated } = useChat();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [index, setIndex] = useState<number | undefined>(undefined);
-    const navigator = useRouter();
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigator.push("/dashboard");
-        }
-    });
-
     const handleloginopen = () => {
         setIndex(0);
         onOpen();
@@ -87,7 +75,7 @@ const Home = () => {
                 <ModalContent w={{ base: "95vw" }}>
                     <ModalHeader></ModalHeader>
                     <ModalBody>
-                        <Auth tabindex={index}/>
+                        <Auth tabindex={index} />
                     </ModalBody>
                     <ModalCloseButton />
                 </ModalContent>

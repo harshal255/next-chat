@@ -15,8 +15,8 @@ export const authOptions: NextAuthOptions = {
             // e.g. domain, email, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-                email: { label: "Email", type: "text", placeholder: "jsmith" },
-                password: { label: "Password", type: "password" }
+                email: { label: "Email", type: "text", placeholder: "Enter Your Email Here..." },
+                password: { label: "Password", type: "password",placeholder: "Enter Your Password Here..." }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -80,25 +80,6 @@ export const authOptions: NextAuthOptions = {
                 token.createdAt = customUser.createdAt;
                 token.updatedAt = customUser.updatedAt;
             }
-            else {
-                // Subsequent requests: fetch latest data from DB
-                await dbConnect();
-                const dbUser = await User.findById(token.id);
-                if (dbUser) {
-                    token.id = dbUser._id;
-                    token.name = dbUser.name;
-                    token.email = dbUser.email;
-                    token.about = dbUser.about;
-                    token.mobileNo = dbUser.mobileNo;
-                    token.profilePic = dbUser.profilePic;
-                    token.otp = dbUser.otp;
-                    token.isOnline = dbUser.isOnline;
-                    token.isDeleted = dbUser.isDeleted;
-                    token.lastSeen = dbUser.lastSeen;
-                    token.createdAt = dbUser.createdAt;
-                    token.updatedAt = dbUser.updatedAt;
-                }
-            }
             return token
         },
         async session({ session, token }) {
@@ -116,19 +97,11 @@ export const authOptions: NextAuthOptions = {
                 session.user.createdAt = token.createdAt;
                 session.user.updatedAt = token.updatedAt;
             }
-            else {
-                // Subsequent requests: fetch latest data from DB
-                await dbConnect();
-                const dbUser = await User.findById(token.id);
-                if (dbUser) {
-                    token.name = dbUser.name;
-                    token.email = dbUser.email;
-                    token.about = dbUser.about;
-                    // ...update other fields
-                }
-            }
             return session
         },
+    },
+    pages:{
+        signIn:'/'
     },
     //docs link 🚀📄🔗 : https://next-auth.js.org/configuration/options
     session: {

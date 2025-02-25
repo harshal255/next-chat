@@ -1,10 +1,28 @@
+import { getToken } from "next-auth/jwt";
 import withAuth from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 //docs link 🚀📄🔗: https://next-auth.js.org/configuration/nextjs#middleware
 
+interface NextAuthRequest extends NextRequest {
+    nextauth: {
+        token: { [key: string]: any } | null;
+    };
+}
+
 export default withAuth(
-    function middleware() {
+    async function middleware(req: NextAuthRequest) {
+        console.log("Middleware Called");
+        const { pathname } = req.nextUrl;
+        const token = await getToken({
+            req: req,
+            secret: process.env.NEXTAUTH_SECRET,
+        });
+
+        // If user is authorized and trying to access "/", redirect to "/dashboard"
+        if (pathname === "/" && token) {
+            return NextResponse.redirect(new URL("/dashboard", req.url));
+        }
         return NextResponse.next();
     },
     {
@@ -12,12 +30,12 @@ export default withAuth(
             authorized: ({ token, req }) => {
                 const { pathname } = req.nextUrl;
                 //allow auth related routes
-                if (pathname.startsWith("/api/auth") || pathname === "/login" || pathname === "/register") {
+                if (pathname.startsWith("/api/auth")) {
                     return true;
                 }
 
                 //public
-                if (pathname === "/" || pathname.startsWith("/api/video")) {
+                if (pathname === "/") {
                     return true;
                 }
 
