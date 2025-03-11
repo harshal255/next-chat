@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
                 email: { label: "Email", type: "text", placeholder: "Enter Your Email Here..." },
-                password: { label: "Password", type: "password",placeholder: "Enter Your Password Here..." }
+                password: { label: "Password", type: "password", placeholder: "Enter Your Password Here..." }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -64,8 +64,8 @@ export const authOptions: NextAuthOptions = {
     ],
     //docs link 🚀📄🔗: https://next-auth.js.org/configuration/callbacks
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
+        async jwt({ token, user, trigger }) {
+            if (user || trigger === 'update') {
                 const customUser = user as any; // Bypass TypeScript checks
                 token.id = customUser.id;
                 token.name = customUser.name;
@@ -82,8 +82,8 @@ export const authOptions: NextAuthOptions = {
             }
             return token
         },
-        async session({ session, token }) {
-            if (session.user) {
+        async session({ session, token, trigger }) {
+            if (session.user || trigger === 'update') {
                 session.user.id = token.id as string;
                 session.user.name = token.name;
                 session.user.email = token.email;
@@ -100,8 +100,8 @@ export const authOptions: NextAuthOptions = {
             return session
         },
     },
-    pages:{
-        signIn:'/'
+    pages: {
+        signIn: '/'
     },
     //docs link 🚀📄🔗 : https://next-auth.js.org/configuration/options
     session: {

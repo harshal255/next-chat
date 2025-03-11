@@ -25,17 +25,14 @@ import { ChevronDownIcon, ChevronUpIcon, EditIcon } from "@chakra-ui/icons";
 import _isEqual from "lodash/isEqual";
 import { useToast } from "@chakra-ui/react";
 import { useChat } from "@/contexts/ChatProvider";
-import { useSession } from "next-auth/react";
 
-interface ProfileModalType { isOpen: boolean; onClose: () => void; }
+interface ProfileModalType { isOpen: boolean; onClose: () => void; user: any; setUser: any }
 
-export const ProfileModal = ({ isOpen, onClose }: ProfileModalType) => {
+export const ProfileModal = ({ isOpen, onClose, user, setUser }: ProfileModalType) => {
   const { hostName } = useChat();
   const [editing, setEditing] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [showchangepassword, setshowchangepassword] = useState(false);
-  const { data: session, update } = useSession();
-  const user = session?.user;
   const [editedUser, setEditedUser] = useState<any>(user);
 
   const toast = useToast();
@@ -48,9 +45,8 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalType) => {
   }, [user]);
 
   const handleSave = async () => {
-
+    setUser(editedUser);
     // send the updated user to the server
-
     try {
       const response = await fetch(`${hostName}/api/user/update`, {
         method: "PUT",
@@ -80,11 +76,6 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalType) => {
         });
         setEditing(false);
       }
-      // Update the client-side session immediately
-      const updatedData = await update({
-        user: { ...session?.user, ...editedUser }
-      });
-      console.log({ updatedData, editedUser })
     } catch (error) {
       console.log(error);
     }
@@ -186,13 +177,13 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalType) => {
                   <Input
                     name="name"
                     placeholder="Name"
-                    value={editedUser.name}
+                    value={editedUser?.name}
                     onChange={handleChange}
                   />
                   <Input
                     name="about"
                     placeholder="about"
-                    value={editedUser.about}
+                    value={editedUser?.about}
                     onChange={handleChange}
                   />
                   <Button

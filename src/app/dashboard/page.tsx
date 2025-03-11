@@ -1,4 +1,6 @@
 'use client';
+import { ChatArea } from '@/components/Chat/ChatArea';
+import Chats from '@/components/Chat/Chats';
 import { useChat } from '@/contexts/ChatProvider';
 import { Box, Divider, Flex, Skeleton, SkeletonCircle, SkeletonText, Stack, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -87,12 +89,12 @@ const page = () => {
                     borderWidth={{ base: "0px", md: "2px" }}
                     minW={"min-content"}
                 >
-                    {/* <Flex h={"100%"}>
+                    <Flex h={"100%"}>
             <Box
-              display={{
-                base: activeChatId !== "" ? "none" : "flex",
-                md: "block",
-              }}
+            //   display={{
+            //     base: activeChatId !== "" ? "none" : "flex",
+            //     md: "block",
+            //   }}
               w={{ base: "100%", md: "29vw" }}
             >
               <Chats />
@@ -108,7 +110,7 @@ const page = () => {
             >
               <ChatArea />
             </Box>
-          </Flex> */}
+          </Flex>
                 </Box>
             )}
         </>

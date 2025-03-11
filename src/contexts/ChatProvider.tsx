@@ -1,6 +1,6 @@
 'use client';
 import { useSession } from "next-auth/react";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 // import io from "socket.io-client";
 // 192.168.0.104
 //http://192.168.0.104:5000
@@ -9,26 +9,37 @@ import { createContext, ReactNode, useContext } from "react";
 
 // var socket = io(hostName);
 
+export interface SessionUser {
+    id: string;
+    name?: string;
+    email?: string;
+    profilePic?: string;
+    about?: string;
+    mobileNo?: string;
+    otp?: string;
+    isOnline?: boolean;
+    isDeleted?: boolean;
+    lastSeen?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
 interface ChatContextType {
     hostName: string,
     isAuthenticated: boolean,
-    user?: object,
+    user: SessionUser | null,
+    setUser: React.Dispatch<React.SetStateAction<SessionUser | null>>,
     status: "loading" | "authenticated" | "unauthenticated";
 }
 
-const ChatContext = createContext<ChatContextType | undefined>({
-    hostName: "http://localhost:3000",
-    isAuthenticated: false,
-    user: {},
-    status:"unauthenticated"
-});
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: ReactNode }) {
     const hostName = "http://localhost:3000";
-    const { data: session,status } = useSession();
-    const user = session?.user;
-    const isAuthenticated = !!session?.user;
-    console.log({ session })
+    const { data: session, status } = useSession();
+    console.log({ session });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState<SessionUser | null>(null);
     // const [receiver, setReceiver] = useState({});
     // const [messageList, setMessageList] = useState([]);
     // const [activeChatId, setActiveChatId] = useState("");
@@ -75,36 +86,15 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     //     });
     //   }, []);
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const token = localStorage.getItem("token");
-    //             if (token) {
-    //                 const res = await fetch(`${hostName}/auth/me`, {
-    //                     method: "GET",
-    //                     headers: {
-    //                         "Content-Type": "application/json",
-    //                         "auth-token": token,
-    //                     },
-    //                 });
-    //                 const data = await res.json();
-    //                 setUser(data);
-    //                 console.log("user fetched");
-    //                 setIsAuthenticated(true);
-    //                 //   socket.emit("setup", await data._id);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //             setIsAuthenticated(false);
-    //             setUser({});
-    //             localStorage.removeItem("token");
-    //             localStorage.removeItem("user");
-    //         }
-    //     };
+    useEffect(() => {
+        if (session?.user) {
+            setUser(session.user as SessionUser);
+            setIsAuthenticated(true);
+        }
+        // fetchData();
+    }, [session]);
 
-    //     fetchUser();
-    //     fetchData();
-    // }, []);
+    console.log("user from chat provider", user);
 
     return (
         <ChatContext.Provider
@@ -112,7 +102,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 isAuthenticated,
                 user,
                 status,
-                // setUser,
+                setUser,
                 // receiver,
                 // setReceiver,
                 // messageList,

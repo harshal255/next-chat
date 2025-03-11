@@ -1,3 +1,4 @@
+'use client';
 import { MouseEvent } from "react";
 import {
   Button,
@@ -13,6 +14,7 @@ import { ProfileModal } from "../miscellaneous/ProfileModal";
 import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useChat } from "@/contexts/ChatProvider";
 
 interface ProfileMenuType {
   isOpen: boolean;
@@ -22,18 +24,7 @@ interface ProfileMenuType {
 
 const ProfileMenu = (props: ProfileMenuType) => {
   const { toggleColorMode } = useColorMode();
-  const { data: session } = useSession();
-  const user = session?.user;
-
-  // const context = useContext(chatContext);
-  // const {
-  //   user,
-  //   setUser,
-  //   setIsAuthenticated,
-  //   setActiveChatId,
-  //   setMessageList,
-  //   setReceiver,
-  // } = context;
+  const { user, setUser } = useChat();
   const router = useRouter();
   const handleLogout = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -109,6 +100,8 @@ const ProfileMenu = (props: ProfileMenuType) => {
       <ProfileModal
         isOpen={props.isOpen}
         onClose={props.onClose}
+        user={user}
+        setUser={setUser}
       />
     </>
   );
