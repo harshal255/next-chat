@@ -24,8 +24,8 @@ const SingleMessage = ({
   activeChatId,
   removeMessageFromList,
   toast,
-}:any) => {
-  const isSender = message.senderId === user._id;
+}: any) => {
+  const isSender = message.senderId === user?.id;
   const messageTime = `${new Date(message.createdAt).getHours()}:${new Date(
     message.createdAt
   ).getMinutes()}`;
@@ -51,24 +51,23 @@ const SingleMessage = ({
     });
   };
 
-  // const handleDeleteMessage = async (deletefrom) => {
-  //   // Remove message from UI
-  //   removeMessageFromList(message._id);
-  //   onCloseDeleteModal();
+  const handleDeleteMessage = async (deletefrom: any) => {
+    // Remove message from UI
+    removeMessageFromList(message._id);
+    onCloseDeleteModal();
 
-  //   const deleteFrom = [user._id];
-  //   if (deletefrom === 2) {
-  //     deleteFrom.push(receiver._id);
-  //   }
+    const deleteFrom = [user._id];
+    if (deletefrom === 2) {
+      deleteFrom.push(receiver._id);
+    }
 
-  //   const data = {
-  //     messageId: message._id,
-  //     conversationId: activeChatId,
-  //     deleteFrom,
-  //   };
-
-  //   socket.emit("delete-message", data);
-  // };
+    const data = {
+      messageId: message._id,
+      conversationId: activeChatId,
+      deleteFrom,
+    };
+    // socket.emit("delete-message", data);
+  };
 
   return (
     <>
@@ -170,7 +169,7 @@ const SingleMessage = ({
 
                 {isSender &&
                   message.seenBy?.find(
-                    (element:any) => element.user === receiver._id
+                    (element: any) => element.user === receiver._id
                   ) && (
                     <Circle ml={1} fontSize="x-small" color="green.100">
                       <CheckCircleIcon />
@@ -212,11 +211,11 @@ const SingleMessage = ({
         </Flex>
       </Flex>
 
-      {/* <DeleteMessageModal
+      <DeleteMessageModal
         isOpen={isDeleteModalOpen}
-        // handleDeleteMessage={handleDeleteMessage}
+        handleDeleteMessage={handleDeleteMessage}
         onClose={onCloseDeleteModal}
-      /> */}
+      />
     </>
   );
 };

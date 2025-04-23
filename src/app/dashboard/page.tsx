@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-    const { status } = useChat();
+    const { status,activeChatId } = useChat();
 
     const router = useRouter();
     const toast = useToast();
@@ -91,10 +91,10 @@ const page = () => {
                 >
                     <Flex h={"100%"}>
             <Box
-            //   display={{
-            //     base: activeChatId !== "" ? "none" : "flex",
-            //     md: "block",
-            //   }}
+              display={{
+                base: activeChatId !== "" ? "none" : "flex",
+                md: "block",
+              }}
               w={{ base: "100%", md: "29vw" }}
             >
               <Chats />

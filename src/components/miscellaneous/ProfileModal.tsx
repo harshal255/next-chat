@@ -26,9 +26,9 @@ import _isEqual from "lodash/isEqual";
 import { useToast } from "@chakra-ui/react";
 import { useChat } from "@/contexts/ChatProvider";
 
-interface ProfileModalType { isOpen: boolean; onClose: () => void; user: any; setUser: any }
+interface ProfileModalType { isOpen: boolean; onClose: () => void; user?: any; setUser?: any;onOpen?:any }
 
-export const ProfileModal = ({ isOpen, onClose, user, setUser }: ProfileModalType) => {
+export const ProfileModal = ({ isOpen, onClose, user, setUser,onOpen }: ProfileModalType) => {
   const { hostName } = useChat();
   const [editing, setEditing] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);

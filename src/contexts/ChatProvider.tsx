@@ -30,6 +30,22 @@ interface ChatContextType {
     user: SessionUser | null,
     setUser: React.Dispatch<React.SetStateAction<SessionUser | null>>,
     status: "loading" | "authenticated" | "unauthenticated";
+    myChatList: any,
+    setMyChatList: any,
+    originalChatList: any,
+    isChatLoading: any,
+    setIsChatLoading: any,
+    receiver: any,
+    setReceiver: any,
+    messageList: any,
+    setMessageList: any,
+    activeChatId: any,
+    setActiveChatId: any,
+    fetchData: any,
+    isOtherUserTyping: any,
+    setIsOtherUserTyping: any,
+    isLoading: any,
+    setIsLoading: any
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -40,35 +56,38 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     console.log({ session });
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<SessionUser | null>(null);
-    // const [receiver, setReceiver] = useState({});
-    // const [messageList, setMessageList] = useState([]);
-    // const [activeChatId, setActiveChatId] = useState("");
-    // const [myChatList, setMyChatList] = useState([]);
-    // const [originalChatList, setOriginalChatList] = useState([]);
-    // const [isOtherUserTyping, setIsOtherUserTyping] = useState(false);
-    // const [isChatLoading, setIsChatLoading] = useState(false);
-    // const [isLoading, setIsLoading] = useState(true);
+    const [receiver, setReceiver] = useState({});
+    const [messageList, setMessageList] = useState([]);
+    const [activeChatId, setActiveChatId] = useState("");
+    const [myChatList, setMyChatList] = useState([]);
+    const [originalChatList, setOriginalChatList] = useState([]);
+    const [isOtherUserTyping, setIsOtherUserTyping] = useState(false);
+    const [isChatLoading, setIsChatLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // const fetchData = async () => {
-    //     try {
-    //         const response = await fetch(`${hostName}/conversation/`, {
-    //             method: "GET",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "auth-token": localStorage.getItem("token"),
-    //             },
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error("Failed to fetch data" + (await response.text()));
-    //         }
-    //         const jsonData = await response.json();
-    //         setMyChatList(jsonData);
-    //         setIsLoading(false);
-    //         setOriginalChatList(jsonData);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const fetchData = async () => {
+
+        try {
+            const response = await fetch(`${hostName}/api/conversation/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch data" + (await response.text()));
+            }
+            const jsonData = await response.json();
+            // console.log({jsonData});
+            setMyChatList(jsonData?.conversationList);
+            setIsLoading(false);
+            setOriginalChatList(jsonData?.conversationList);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    console.log({ myChatList });
 
     //   useEffect(() => {
     //     socket.on("receiver-online", () => {
@@ -91,7 +110,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             setUser(session.user as SessionUser);
             setIsAuthenticated(true);
         }
-        // fetchData();
+        fetchData();
     }, [session]);
 
     console.log("user from chat provider", user);
@@ -103,24 +122,24 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 user,
                 status,
                 setUser,
-                // receiver,
-                // setReceiver,
-                // messageList,
-                // setMessageList,
-                // activeChatId,
-                // setActiveChatId,
-                // myChatList,
-                // setMyChatList,
-                // originalChatList,
-                // // fetchData,
+                receiver,
+                setReceiver,
+                messageList,
+                setMessageList,
+                activeChatId,
+                setActiveChatId,
+                myChatList,
+                setMyChatList,
+                originalChatList,
+                fetchData,
                 hostName,
-                // // socket,
-                // isOtherUserTyping,
-                // setIsOtherUserTyping,
-                // isChatLoading,
-                // setIsChatLoading,
-                // isLoading,
-                // setIsLoading,
+                // socket,
+                isOtherUserTyping,
+                setIsOtherUserTyping,
+                isChatLoading,
+                setIsChatLoading,
+                isLoading,
+                setIsLoading,
             }}
         >
             {children}

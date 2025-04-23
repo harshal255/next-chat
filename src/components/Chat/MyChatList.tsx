@@ -21,7 +21,7 @@ import { useToast } from "@chakra-ui/react";
 import ProfileMenu from "../Navbar/ProfileMenu";
 import { useDisclosure } from "@chakra-ui/react";
 import NewMessage from "../miscellaneous/NewMessage";
-// import wavFile from "../../../public/assets/newmessage";
+// import wavFile from "/assets/newmessage.wav";
 import { ProfileModal } from "../miscellaneous/ProfileModal";
 import { useChat } from "@/contexts/ChatProvider";
 
@@ -49,159 +49,159 @@ const MyChatList = (props: any) => {
         hostName,
         user,
         // socket,
-        // myChatList: chatlist,
-        // originalChatList: data,
-        // activeChatId,
-        // setActiveChatId,
-        // setMyChatList,
-        // setIsChatLoading,
-        // setMessageList,
-        // setIsOtherUserTyping,
-        // setReceiver,
-        // isLoading = false,
-        // isOtherUserTyping,
+        myChatList: chatlist,
+        originalChatList: data,
+        activeChatId,
+        setActiveChatId,
+        setMyChatList,
+        setIsChatLoading,
+        setMessageList,
+        setIsOtherUserTyping,
+        setReceiver,
+        isLoading,
+        isOtherUserTyping,
     } = useChat();
-    const isLoading = false;
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    //   useEffect(() => {
-    //     socket.on("new-message-notification", async (data) => {
-    //       var newlist = chatlist;
+    useEffect(() => {
+        // socket.on("new-message-notification", async (data) => {
+        //   var newlist = chatlist;
 
-    //       let chatIndex = newlist.findIndex(
-    //         (chat) => chat._id === data.conversationId
-    //       );
-    //       if (chatIndex === -1) {
-    //         newlist.unshift(data.conversation);
-    //       }
-    //       chatIndex = newlist.findIndex((chat) => chat._id === data.conversationId);
-    //       newlist[chatIndex].latestmessage = data.text;
+        //   let chatIndex = newlist.findIndex(
+        //     (chat) => chat._id === data.conversationId
+        //   );
+        //   if (chatIndex === -1) {
+        //     newlist.unshift(data.conversation);
+        //   }
+        //   chatIndex = newlist.findIndex((chat) => chat._id === data.conversationId);
+        //   newlist[chatIndex].latestmessage = data.text;
 
-    //       if (activeChatId !== data.conversationId) {
-    //         newlist[chatIndex].unreadCounts = newlist[chatIndex].unreadCounts.map(
-    //           (unread) => {
-    //             if (unread.userId === user._id) {
-    //               unread.count = unread.count + 1;
-    //             }
-    //             return unread;
-    //           }
-    //         );
-    //         newlist[chatIndex].updatedAt = new Date();
-    //       }
+        //   if (activeChatId !== data.conversationId) {
+        //     newlist[chatIndex].unreadCounts = newlist[chatIndex].unreadCounts.map(
+        //       (unread) => {
+        //         if (unread.userId === user._id) {
+        //           unread.count = unread.count + 1;
+        //         }
+        //         return unread;
+        //       }
+        //     );
+        //     newlist[chatIndex].updatedAt = new Date();
+        //   }
 
-    //       // If you want to move the updated chat to the beginning of the list
-    //       let updatedChat = newlist.splice(chatIndex, 1)[0];
-    //       newlist.unshift(updatedChat);
+        //   // If you want to move the updated chat to the beginning of the list
+        //   let updatedChat = newlist.splice(chatIndex, 1)[0];
+        //   newlist.unshift(updatedChat);
 
-    //       setMyChatList([...newlist]); // Create a new array to update state
+        //   setMyChatList([...newlist]); // Create a new array to update state
 
-    //       //find the name of person who sent the message
-    //       let sender = newlist.find((chat) => chat._id === data.conversationId)
-    //         .members[0];
+        //   //find the name of person who sent the message
+        //   let sender = newlist.find((chat) => chat._id === data.conversationId)
+        //     .members[0];
 
-    //       activeChatId !== data.conversationId &&
-    //         // sound.play().catch((error) => {
-    //         //   console.log(error);
-    //         // });
+        //   activeChatId !== data.conversationId &&
+        //     // sound.play().catch((error) => {
+        //     //   console.log(error);
+        //     // });
 
-    //       activeChatId !== data.conversationId &&
-    //         toast({
-    //           // title: "New Message",
-    //           // description: data.text,
-    //           status: "success",
-    //           duration: 5000,
-    //           position: "top-right",
+        //   activeChatId !== data.conversationId &&
+        //     toast({
+        //       // title: "New Message",
+        //       // description: data.text,
+        //       status: "success",
+        //       duration: 5000,
+        //       position: "top-right",
 
-    //           render: () => (
-    //             <NewMessage
-    //               sender={sender}
-    //               data={data}
-    //               handleChatOpen={handleChatOpen}
-    //             />
-    //           ),
-    //         });
-    //     });
+        //       render: () => (
+        //         <NewMessage
+        //           sender={sender}
+        //           data={data}
+        //           handleChatOpen={handleChatOpen}
+        //         />
+        //       ),
+        //     });
+        // });
 
-    //     return () => {
-    //       socket.off("new-message-notification");
-    //     };
-    //   });
+        // return () => {
+        //   socket.off("new-message-notification");
+        // };
+    });
 
-    //   const [squery, setsquery] = useState("");
+    const [squery, setsquery] = useState("");
 
-    //   const handleUserSearch = async (e) => {
-    //     if (e.target.value !== "") {
-    //       setsquery(e.target.value.toLowerCase());
-    //       const newchatlist = data.filter((chat) =>
-    //         chat.members[0].name.toLowerCase().includes(squery)
-    //       );
-    //       setMyChatList(newchatlist);
-    //     } else {
-    //       setMyChatList(context.originalChatList);
-    //     }
-    //   };
+    const handleUserSearch = async (e: any) => {
+        if (e.target.value !== "") {
+            setsquery(e.target.value.toLowerCase());
+            const newchatlist = data.filter((chat: any) =>
+                chat.members[0].name.toLowerCase().includes(squery)
+            );
+            setMyChatList(newchatlist);
+        } else {
+            setMyChatList(data);
+        }
+    };
 
-    //   const handleChatOpen = async (chatid, receiver) => {
-    //     try {
-    //       setIsChatLoading(true);
-    //       setMessageList([]);
-    //       setIsOtherUserTyping(false);
-    //       const msg = document.getElementById("new-message");
-    //       if (msg) {
-    //         document.getElementById("new-message").value = "";
-    //         document.getElementById("new-message").focus();
-    //       }
+    const handleChatOpen = async (chatid: any, receiver: any) => {
+        try {
+            console.log("======================handleChatOpen");
+            setIsChatLoading(true);
+            setMessageList([]);
+            setIsOtherUserTyping(false);
+            const msg = document.getElementById("new-message");
+            if (msg) {
+                (document.getElementById("new-message") as HTMLInputElement).value = "";
+                document?.getElementById("new-message")?.focus();
+            }
 
-    //       setIsOtherUserTyping(false);
-    //       await socket.emit("stop-typing", {
-    //         typer: user._id,
-    //         conversationId: activeChatId,
-    //       });
-    //       await socket.emit("leave-chat", activeChatId);
+            setIsOtherUserTyping(false);
+            //   await socket.emit("stop-typing", {
+            //     typer: user._id,
+            //     conversationId: activeChatId,
+            //   });
+            //   await socket.emit("leave-chat", activeChatId);
 
-    //       socket.emit("join-chat", { roomId: chatid, userId: user._id });
-    //       setActiveChatId(chatid);
+            //   socket.emit("join-chat", { roomId: chatid, userId: user._id });
+            setActiveChatId(chatid);
 
-    //       const response = await fetch(`${hostName}/message/${chatid}/${user._id}`, {
-    //         method: "GET",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "auth-token": localStorage.getItem("token"),
-    //         },
-    //       });
-    //       if (!response.ok) {
-    //         throw new Error("Failed to fetch data");
-    //       }
-    //       const jsonData = await response.json();
+            const response = await fetch(`${hostName}/api/message/${chatid}/${user?.id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const jsonData = await response.json();
 
-    //       setMessageList(jsonData);
-    //       setReceiver(receiver);
-    //       setIsChatLoading(false);
+            setMessageList(jsonData.messages);
+            console.log({ messageList: jsonData });
+            setReceiver(receiver);
+            setIsChatLoading(false);
 
-    //       const newlist = chatlist.map((chat) => {
-    //         if (chat._id === chatid) {
-    //           chat.unreadCounts = chat.unreadCounts.map((unread) => {
-    //             if (unread.userId === user._id) {
-    //               unread.count = 0;
-    //             }
-    //             return unread;
-    //           });
-    //         }
-    //         return chat;
-    //       });
+            const newlist = chatlist.map((chat: any) => {
+                if (chat._id === chatid) {
+                    chat.unreadCounts = chat.unreadCounts.map((unread: any) => {
+                        if (unread.userId === user?.id) {
+                            unread.count = 0;
+                        }
+                        return unread;
+                    });
+                }
+                return chat;
+            });
 
-    //       setMyChatList(newlist);
+            setMyChatList(newlist);
 
-    //       setTimeout(() => {
-    //         document.getElementById("chat-box")?.scrollTo({
-    //           top: document.getElementById("chat-box").scrollHeight,
-    //           // behavior: "smooth",
-    //         });
-    //       }, 100);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
+            setTimeout(() => {
+                document.getElementById("chat-box")?.scrollTo({
+                    top: document?.getElementById("chat-box")?.scrollHeight,
+                    behavior: "smooth",
+                });
+            }, 100);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return !isLoading ? (
         <>
@@ -225,7 +225,7 @@ const MyChatList = (props: any) => {
                             <Input
                                 type="text"
                                 placeholder="search user"
-                                // onChange={handleUserSearch}
+                                onChange={handleUserSearch}
                                 id="search-input"
                             />
                         </InputGroup>
@@ -251,7 +251,7 @@ const MyChatList = (props: any) => {
                 </Button>
 
                 <Box h={"100%"} px={2} flex={1} overflowY={"auto"} sx={scrollbarconfig}>
-                    {/* {chatlist.map((chat) => (
+                    {chatlist.map((chat: any) => (
                         <Flex
                             key={chat.members[0]._id}
                             my={2}
@@ -331,7 +331,7 @@ const MyChatList = (props: any) => {
                                     </Box>
 
                                     {chat.unreadCounts.find(
-                                        (unread) => unread.userId === user._id
+                                        (unread: any) => unread.userId === user?.id
                                     )?.count > 0 && (
                                             <Circle
                                                 backgroundColor={"black"}
@@ -344,7 +344,7 @@ const MyChatList = (props: any) => {
                                                     &nbsp;
                                                     {
                                                         chat.unreadCounts.find(
-                                                            (unread) => unread.userId === user._id
+                                                            (unread: any) => unread.userId === user?.id
                                                         )?.count
                                                     }
                                                     &nbsp;
@@ -354,13 +354,12 @@ const MyChatList = (props: any) => {
                                 </Stack>
                             </Button>
                         </Flex>
-                    ))} */}
+                    ))}
                 </Box>
                 <ProfileModal
                     isOpen={isOpen}
                     onClose={onClose}
-                    // onOpen={onOpen}
-                />
+                    onOpen={onOpen} />
             </Box>
         </>
     ) : (
